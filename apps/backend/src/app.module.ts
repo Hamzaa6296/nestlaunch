@@ -3,16 +3,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    // Load .env file globally across all modules
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
     }),
-
-    // Connect to MongoDB using env variable
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -20,6 +18,7 @@ import { AppService } from './app.service';
       }),
       inject: [ConfigService],
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
