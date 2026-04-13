@@ -1,0 +1,9 @@
+{
+  "name": "@nestlaunch/config",
+  "version": "0.1.0",
+  "private": true,
+  "files": [
+    "prettier.js",
+    "eslint-base.js"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "nestlaunch",
+  "version": "0.1.0",
+  "description": "Production-ready SaaS boilerplate with NestJS, Next.js, MongoDB & Stripe",
+  "private": true,
+  "packageManager": "npm@10.9.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "clean": "turbo run clean"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0",
+    "turbo": "^2.9.6"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
