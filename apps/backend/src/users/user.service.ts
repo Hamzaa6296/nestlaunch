@@ -20,6 +20,10 @@ export class UsersService {
     return this.userModel.findById(id).exec();
   }
 
+  async findByResetToken(token: string): Promise<UserDocument | null> {
+    return this.userModel.findOne({ resetPasswordToken: token }).exec();
+  }
+
   async updateById(
     id: string,
     data: Partial<User>,
