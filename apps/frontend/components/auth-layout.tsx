@@ -9,61 +9,143 @@ interface AuthLayoutProps {
 
 export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
   return (
-    <div className="min-h-screen flex">
-      {/* Left Panel */}
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+      }}
+    >
+      {/* ── Left Panel ── */}
       <div
-        className="hidden lg:flex lg:w-[45%] flex-col justify-between p-12"
-        style={{ backgroundColor: "#0f1117" }}
+        style={{
+          width: "44%",
+          backgroundColor: "#0f1117",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: "48px",
+          position: "relative",
+          overflow: "hidden",
+        }}
+        className="hidden lg:flex"
       >
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{ backgroundColor: "#c8a96e" }}
-          >
-            <span className="text-sm font-bold" style={{ color: "#0f1117" }}>
-              N
-            </span>
-          </div>
-          <span className="text-lg font-semibold" style={{ color: "#f8f7f4" }}>
-            NestLaunch
-          </span>
-        </Link>
+        {/* Subtle background grid */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, #1e2130 1px, transparent 0)",
+            backgroundSize: "32px 32px",
+            opacity: 0.4,
+          }}
+        />
 
-        {/* Middle Content */}
-        <div>
-          <div
-            className="text-5xl font-serif leading-tight mb-6"
-            style={{ color: "#f8f7f4" }}
+        {/* Content above grid */}
+        <div style={{ position: "relative", zIndex: 1 }}>
+          {/* Logo */}
+          <Link
+            href="/"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              textDecoration: "none",
+            }}
           >
-            Build your SaaS
-            <br />
+            <div
+              style={{
+                width: "34px",
+                height: "34px",
+                borderRadius: "8px",
+                backgroundColor: "#c8a96e",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: 700,
+                fontSize: "15px",
+                color: "#0f1117",
+                flexShrink: 0,
+              }}
+            >
+              N
+            </div>
+            <span
+              style={{
+                fontSize: "17px",
+                fontWeight: 600,
+                color: "#f8f7f4",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              NestLaunch
+            </span>
+          </Link>
+        </div>
+
+        {/* Middle */}
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <h2
+            style={{
+              fontFamily: "var(--font-dm-serif), Georgia, serif",
+              fontSize: "2.6rem",
+              lineHeight: 1.2,
+              color: "#f8f7f4",
+              marginBottom: "16px",
+              fontWeight: 400,
+            }}
+          >
+            Build your SaaS{" "}
             <span style={{ color: "#c8a96e" }}>10x faster.</span>
-          </div>
-          <p className="text-base leading-relaxed" style={{ color: "#8b8b8b" }}>
-            Production-ready boilerplate with authentication, payments, and
-            everything you need to launch.
+          </h2>
+          <p
+            style={{
+              fontSize: "15px",
+              color: "#6b7280",
+              lineHeight: 1.6,
+              maxWidth: "340px",
+            }}
+          >
+            Production-ready boilerplate with auth, payments, and everything you
+            need to launch fast.
           </p>
 
-          {/* Feature List */}
-          <div className="mt-10 space-y-4">
+          {/* Features */}
+          <div
+            style={{
+              marginTop: "36px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "14px",
+            }}
+          >
             {[
               "NestJS + Next.js Monorepo",
               "JWT Auth with Email OTP",
               "Stripe Payments Ready",
               "MongoDB + Swagger Docs",
             ].map((feature) => (
-              <div key={feature} className="flex items-center gap-3">
+              <div
+                key={feature}
+                style={{ display: "flex", alignItems: "center", gap: "12px" }}
+              >
                 <div
-                  className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
                   style={{
-                    backgroundColor: "#c8a96e20",
-                    border: "1px solid #c8a96e",
+                    width: "20px",
+                    height: "20px",
+                    borderRadius: "50%",
+                    backgroundColor: "rgba(200, 169, 110, 0.12)",
+                    border: "1px solid rgba(200, 169, 110, 0.4)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
                   }}
                 >
-                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
                     <path
-                      d="M1 4L3.5 6.5L9 1"
+                      d="M1 3.5L3 5.5L8 1"
                       stroke="#c8a96e"
                       strokeWidth="1.5"
                       strokeLinecap="round"
@@ -71,7 +153,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
                     />
                   </svg>
                 </div>
-                <span className="text-sm" style={{ color: "#a0a0a0" }}>
+                <span style={{ fontSize: "14px", color: "#9ca3af" }}>
                   {feature}
                 </span>
               </div>
@@ -79,23 +161,54 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
           </div>
         </div>
 
-        {/* Bottom */}
-        <div>
+        {/* Bottom — User card */}
+        <div style={{ position: "relative", zIndex: 1 }}>
           <div
-            className="flex items-center gap-3 p-4 rounded-xl"
-            style={{ backgroundColor: "#1a1d27" }}
+            style={{
+              backgroundColor: "#1a1d27",
+              borderRadius: "12px",
+              padding: "16px",
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              border: "1px solid #2a2d3a",
+            }}
           >
             <div
-              className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm"
-              style={{ backgroundColor: "#c8a96e", color: "#0f1117" }}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "#c8a96e",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: 600,
+                fontSize: "15px",
+                color: "#0f1117",
+                flexShrink: 0,
+              }}
             >
               H
             </div>
             <div>
-              <p className="text-sm font-medium" style={{ color: "#f8f7f4" }}>
+              <p
+                style={{
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  color: "#f8f7f4",
+                  margin: 0,
+                }}
+              >
                 Hamza Ahmed
               </p>
-              <p className="text-xs" style={{ color: "#6b6b6b" }}>
+              <p
+                style={{
+                  fontSize: "12px",
+                  color: "#6b7280",
+                  margin: "2px 0 0",
+                }}
+              >
                 Full-stack Developer
               </p>
             </div>
@@ -103,41 +216,79 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
         </div>
       </div>
 
-      {/* Right Panel */}
+      {/* ── Right Panel ── */}
       <div
-        className="flex-1 flex flex-col justify-center px-6 py-12 lg:px-16"
-        style={{ backgroundColor: "#f8f7f4" }}
+        style={{
+          flex: 1,
+          backgroundColor: "#f8f7f4",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: "48px 64px",
+        }}
       >
         {/* Mobile Logo */}
-        <div className="lg:hidden mb-10">
-          <Link href="/" className="flex items-center gap-2">
+        <div style={{ marginBottom: "40px" }} className="lg:hidden">
+          <Link
+            href="/"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              textDecoration: "none",
+            }}
+          >
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ backgroundColor: "#0f1117" }}
+              style={{
+                width: "32px",
+                height: "32px",
+                borderRadius: "8px",
+                backgroundColor: "#0f1117",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: 700,
+                fontSize: "14px",
+                color: "#c8a96e",
+              }}
             >
-              <span className="text-sm font-bold" style={{ color: "#c8a96e" }}>
-                N
-              </span>
+              N
             </div>
             <span
-              className="text-lg font-semibold"
-              style={{ color: "#0f1117" }}
+              style={{
+                fontSize: "16px",
+                fontWeight: 600,
+                color: "#0f1117",
+              }}
             >
               NestLaunch
             </span>
           </Link>
         </div>
 
-        <div className="w-full max-w-[420px] mx-auto">
+        <div style={{ width: "100%", maxWidth: "400px", margin: "0 auto" }}>
           {/* Title */}
-          <div className="mb-8">
+          <div style={{ marginBottom: "32px" }}>
             <h1
-              className="text-3xl font-serif mb-2"
-              style={{ color: "#0f1117" }}
+              style={{
+                fontFamily: "var(--font-dm-serif), Georgia, serif",
+                fontSize: "2rem",
+                fontWeight: 400,
+                color: "#0f1117",
+                margin: "0 0 8px",
+                letterSpacing: "-0.02em",
+              }}
             >
               {title}
             </h1>
-            <p className="text-sm" style={{ color: "#6b6b6b" }}>
+            <p
+              style={{
+                fontSize: "14px",
+                color: "#6b7280",
+                margin: 0,
+                lineHeight: 1.5,
+              }}
+            >
               {subtitle}
             </p>
           </div>

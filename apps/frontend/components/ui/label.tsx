@@ -1,20 +1,27 @@
-"use client"
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-import * as React from "react"
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {}
 
-import { cn } from "@/lib/utils"
-
-function Label({ className, ...props }: React.ComponentProps<"label">) {
-  return (
+const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
+  ({ className, style, ...props }, ref) => (
     <label
-      data-slot="label"
-      className={cn(
-        "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
-        className
-      )}
+      ref={ref}
+      className={cn(className)}
+      style={{
+        display: "block",
+        fontSize: "13px",
+        fontWeight: 500,
+        color: "#0f1117",
+        marginBottom: "6px",
+        fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+        ...style,
+      }}
       {...props}
     />
-  )
-}
+  ),
+);
+Label.displayName = "Label";
 
-export { Label }
+export { Label };

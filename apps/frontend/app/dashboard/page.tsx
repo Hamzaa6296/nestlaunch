@@ -7,6 +7,83 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setUser, logout } from "@/store/authSlice";
 import { authApi } from "@/lib/auth";
 
+const navItems = [
+  {
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <rect
+          x="3"
+          y="3"
+          width="7"
+          height="7"
+          rx="1"
+          stroke="currentColor"
+          strokeWidth="1.8"
+        />
+        <rect
+          x="14"
+          y="3"
+          width="7"
+          height="7"
+          rx="1"
+          stroke="currentColor"
+          strokeWidth="1.8"
+        />
+        <rect
+          x="3"
+          y="14"
+          width="7"
+          height="7"
+          rx="1"
+          stroke="currentColor"
+          strokeWidth="1.8"
+        />
+        <rect
+          x="14"
+          y="14"
+          width="7"
+          height="7"
+          rx="1"
+          stroke="currentColor"
+          strokeWidth="1.8"
+        />
+      </svg>
+    ),
+    label: "Dashboard",
+    active: true,
+  },
+  {
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8" />
+        <path
+          d="M4 20c0-4 3.6-7 8-7s8 3 8 7"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
+    label: "Profile",
+    active: false,
+  },
+  {
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.8" />
+        <path
+          d="M12 2v3M12 19v3M2 12h3M19 12h3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
+    label: "Settings",
+    active: false,
+  },
+];
+
 export default function DashboardPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -37,263 +114,465 @@ export default function DashboardPage() {
   if (isLoading) {
     return (
       <div
-        className="min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: "#f8f7f4" }}
+        style={{
+          minHeight: "100vh",
+          backgroundColor: "#f8f7f4",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+        }}
       >
-        <div className="flex flex-col items-center gap-4">
-          <svg
-            className="animate-spin"
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="#0f1117"
-              strokeWidth="4"
-            />
-            <path
-              className="opacity-75"
-              fill="#0f1117"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-            />
-          </svg>
-          <p className="text-sm" style={{ color: "#6b6b6b" }}>
-            Loading...
+        <div style={{ textAlign: "center" }}>
+          <div
+            style={{
+              width: "36px",
+              height: "36px",
+              border: "3px solid #e2e1dd",
+              borderTopColor: "#0f1117",
+              borderRadius: "50%",
+              animation: "spin 0.8s linear infinite",
+              margin: "0 auto 12px",
+            }}
+          />
+          <p style={{ fontSize: "14px", color: "#6b7280", margin: 0 }}>
+            Loading your dashboard...
           </p>
         </div>
       </div>
     );
   }
 
+  const stats = [
+    {
+      label: "Account Status",
+      value: "Active",
+      valueColor: "#16a34a",
+      valueBg: "#f0fdf4",
+      valueBorder: "#bbf7d0",
+    },
+    {
+      label: "Email Verified",
+      value: user?.isEmailVerified ? "Verified" : "Pending",
+      valueColor: user?.isEmailVerified ? "#16a34a" : "#d97706",
+      valueBg: user?.isEmailVerified ? "#f0fdf4" : "#fffbeb",
+      valueBorder: user?.isEmailVerified ? "#bbf7d0" : "#fde68a",
+    },
+    {
+      label: "Account Role",
+      value: user?.role
+        ? user.role.charAt(0).toUpperCase() + user.role.slice(1)
+        : "User",
+      valueColor: "#b45309",
+      valueBg: "#fffbeb",
+      valueBorder: "#fde68a",
+    },
+  ];
+
   return (
-    <div className="min-h-screen flex" style={{ backgroundColor: "#f8f7f4" }}>
-      {/* Sidebar */}
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        backgroundColor: "#f8f7f4",
+        fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+      }}
+    >
+      {/* ── Sidebar ── */}
       <div
-        className="w-64 flex flex-col py-8 px-5"
         style={{
+          width: "240px",
+          flexShrink: 0,
           backgroundColor: "#0f1117",
+          display: "flex",
+          flexDirection: "column",
+          padding: "28px 16px",
           borderRight: "1px solid #1a1d27",
         }}
       >
         {/* Logo */}
-        <div className="flex items-center gap-2 mb-10">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            padding: "0 8px",
+            marginBottom: "32px",
+          }}
+        >
           <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{ backgroundColor: "#c8a96e" }}
+            style={{
+              width: "30px",
+              height: "30px",
+              borderRadius: "7px",
+              backgroundColor: "#c8a96e",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: 700,
+              fontSize: "13px",
+              color: "#0f1117",
+              flexShrink: 0,
+            }}
           >
-            <span className="text-sm font-bold" style={{ color: "#0f1117" }}>
-              N
-            </span>
+            N
           </div>
           <span
-            className="text-base font-semibold"
-            style={{ color: "#f8f7f4" }}
+            style={{
+              fontSize: "15px",
+              fontWeight: 600,
+              color: "#f8f7f4",
+              letterSpacing: "-0.01em",
+            }}
           >
             NestLaunch
           </span>
         </div>
 
+        {/* Nav section label */}
+        <p
+          style={{
+            fontSize: "10px",
+            fontWeight: 600,
+            color: "#374151",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            padding: "0 8px",
+            marginBottom: "8px",
+          }}
+        >
+          Menu
+        </p>
+
         {/* Nav Items */}
-        <nav className="flex-1 space-y-1">
-          {[
-            {
-              icon: "⊡",
-              label: "Dashboard",
-              active: true,
-            },
-            { icon: "◎", label: "Profile", active: false },
-            { icon: "◈", label: "Settings", active: false },
-          ].map((item) => (
+        <nav
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: "2px",
+          }}
+        >
+          {navItems.map((item) => (
             <button
               key={item.label}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors text-left"
               style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                padding: "9px 10px",
+                borderRadius: "8px",
+                fontSize: "14px",
+                fontWeight: item.active ? 500 : 400,
+                color: item.active ? "#f8f7f4" : "#6b7280",
                 backgroundColor: item.active ? "#1a1d27" : "transparent",
-                color: item.active ? "#f8f7f4" : "#6b6b6b",
+                border: "none",
+                cursor: "pointer",
+                width: "100%",
+                textAlign: "left",
+                transition: "background-color 0.15s ease, color 0.15s ease",
+                fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
               }}
             >
-              <span>{item.icon}</span>
+              <span
+                style={{
+                  color: item.active ? "#c8a96e" : "#4b5563",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                {item.icon}
+              </span>
               {item.label}
             </button>
           ))}
         </nav>
 
-        {/* User + Logout */}
+        {/* Bottom — User */}
         <div
-          className="mt-auto pt-4"
-          style={{ borderTop: "1px solid #1a1d27" }}
+          style={{
+            borderTop: "1px solid #1a1d27",
+            paddingTop: "16px",
+          }}
         >
-          <div className="flex items-center gap-3 px-3 py-2 mb-2">
+          {/* User info */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              padding: "8px 10px",
+              marginBottom: "4px",
+            }}
+          >
             <div
-              className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0"
-              style={{ backgroundColor: "#c8a96e", color: "#0f1117" }}
+              style={{
+                width: "32px",
+                height: "32px",
+                borderRadius: "50%",
+                backgroundColor: "#c8a96e",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: 600,
+                fontSize: "13px",
+                color: "#0f1117",
+                flexShrink: 0,
+              }}
             >
               {user?.name?.charAt(0).toUpperCase() || "U"}
             </div>
-            <div className="min-w-0">
+            <div style={{ minWidth: 0 }}>
               <p
-                className="text-sm font-medium truncate"
-                style={{ color: "#f8f7f4" }}
+                style={{
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  color: "#f8f7f4",
+                  margin: 0,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
               >
                 {user?.name}
               </p>
-              <p className="text-xs truncate" style={{ color: "#6b6b6b" }}>
+              <p
+                style={{
+                  fontSize: "11px",
+                  color: "#4b5563",
+                  margin: "2px 0 0",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
                 {user?.email}
               </p>
             </div>
           </div>
+
+          {/* Logout */}
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors"
-            style={{ color: "#6b6b6b" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              padding: "9px 10px",
+              borderRadius: "8px",
+              fontSize: "13px",
+              color: "#6b7280",
+              backgroundColor: "transparent",
+              border: "none",
+              cursor: "pointer",
+              width: "100%",
+              textAlign: "left",
+              fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+              transition: "color 0.15s ease",
+            }}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
               <path
                 d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="1.8"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
             </svg>
-            Logout
+            Sign out
           </button>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 p-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-serif mb-1" style={{ color: "#0f1117" }}>
+      {/* ── Main Content ── */}
+      <div style={{ flex: 1, padding: "40px 48px", overflowY: "auto" }}>
+        {/* Page Header */}
+        <div style={{ marginBottom: "32px" }}>
+          <h1
+            style={{
+              fontFamily: "var(--font-dm-serif), Georgia, serif",
+              fontSize: "1.9rem",
+              fontWeight: 400,
+              color: "#0f1117",
+              margin: "0 0 6px",
+              letterSpacing: "-0.02em",
+            }}
+          >
             Welcome back, {user?.name?.split(" ")[0]} 👋
           </h1>
-          <p className="text-sm" style={{ color: "#6b6b6b" }}>
-            Here&apos;s what&apos;s happening with your account
+          <p style={{ fontSize: "14px", color: "#6b7280", margin: 0 }}>
+            Here&apos;s an overview of your account
           </p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-3 gap-5 mb-8">
-          {[
-            {
-              label: "Account Status",
-              value: "Active",
-              color: "#22c55e",
-              bg: "#f0fdf4",
-            },
-            {
-              label: "Email Verified",
-              value: user?.isEmailVerified ? "Yes" : "No",
-              color: user?.isEmailVerified ? "#22c55e" : "#ef4444",
-              bg: user?.isEmailVerified ? "#f0fdf4" : "#fef2f2",
-            },
-            {
-              label: "Role",
-              value: user?.role || "user",
-              color: "#c8a96e",
-              bg: "#fffbeb",
-            },
-          ].map((stat) => (
+        {/* Stats Row */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "16px",
+            marginBottom: "24px",
+          }}
+        >
+          {stats.map((stat) => (
             <div
               key={stat.label}
-              className="p-5 rounded-xl"
               style={{
                 backgroundColor: "#ffffff",
                 border: "1px solid #e2e1dd",
+                borderRadius: "12px",
+                padding: "20px 22px",
               }}
             >
               <p
-                className="text-xs font-medium mb-2"
-                style={{ color: "#6b6b6b" }}
+                style={{
+                  fontSize: "12px",
+                  fontWeight: 500,
+                  color: "#9ca3af",
+                  margin: "0 0 10px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                }}
               >
                 {stat.label}
               </p>
-              <div className="flex items-center gap-2">
-                <span
-                  className="px-2.5 py-1 rounded-full text-xs font-semibold capitalize"
-                  style={{
-                    backgroundColor: stat.bg,
-                    color: stat.color,
-                  }}
-                >
-                  {stat.value}
-                </span>
-              </div>
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "4px 12px",
+                  backgroundColor: stat.valueBg,
+                  color: stat.valueColor,
+                  border: `1px solid ${stat.valueBorder}`,
+                  borderRadius: "100px",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                }}
+              >
+                {stat.value}
+              </span>
             </div>
           ))}
         </div>
 
-        {/* Account Info Card */}
+        {/* Account Info */}
         <div
-          className="rounded-xl p-6"
           style={{
             backgroundColor: "#ffffff",
             border: "1px solid #e2e1dd",
+            borderRadius: "12px",
+            padding: "24px",
+            marginBottom: "20px",
           }}
         >
           <h2
-            className="text-base font-semibold mb-5"
-            style={{ color: "#0f1117" }}
+            style={{
+              fontSize: "15px",
+              fontWeight: 600,
+              color: "#0f1117",
+              margin: "0 0 20px",
+            }}
           >
             Account Information
           </h2>
-          <div className="space-y-4">
+          <div>
             {[
               { label: "Full Name", value: user?.name },
               { label: "Email Address", value: user?.email },
-              { label: "Account Role", value: user?.role },
-              {
-                label: "User ID",
-                value: user?.id,
-              },
-            ].map((item) => (
+              { label: "Role", value: user?.role },
+              { label: "User ID", value: user?.id },
+            ].map((item, index, arr) => (
               <div
                 key={item.label}
-                className="flex items-center justify-between py-3"
-                style={{ borderBottom: "1px solid #f1f0ec" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "14px 0",
+                  borderBottom:
+                    index < arr.length - 1 ? "1px solid #f1f0ec" : "none",
+                }}
               >
                 <span
-                  className="text-sm font-medium"
-                  style={{ color: "#6b6b6b" }}
+                  style={{
+                    fontSize: "13px",
+                    color: "#6b7280",
+                    fontWeight: 500,
+                  }}
                 >
                   {item.label}
                 </span>
                 <span
-                  className="text-sm font-medium"
-                  style={{ color: "#0f1117" }}
+                  style={{
+                    fontSize: "13px",
+                    color: "#0f1117",
+                    fontWeight: 500,
+                    maxWidth: "260px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
                 >
-                  {item.value}
+                  {item.value || "—"}
                 </span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Pro Version CTA */}
+        {/* Pro CTA */}
         <div
-          className="mt-5 rounded-xl p-6 flex items-center justify-between"
-          style={{ backgroundColor: "#0f1117" }}
+          style={{
+            backgroundColor: "#0f1117",
+            borderRadius: "12px",
+            padding: "24px 28px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "16px",
+            backgroundImage:
+              "radial-gradient(circle at 80% 50%, rgba(200,169,110,0.08) 0%, transparent 60%)",
+          }}
         >
           <div>
             <h3
-              className="text-base font-semibold mb-1"
-              style={{ color: "#f8f7f4" }}
+              style={{
+                fontSize: "16px",
+                fontWeight: 600,
+                color: "#f8f7f4",
+                margin: "0 0 6px",
+              }}
             >
-              Upgrade to Pro
+              Unlock Pro Features
             </h3>
-            <p className="text-sm" style={{ color: "#6b6b6b" }}>
-              Get Stripe payments, admin panel, and more.
+            <p
+              style={{
+                fontSize: "13px",
+                color: "#6b7280",
+                margin: 0,
+                lineHeight: 1.5,
+              }}
+            >
+              Stripe payments, admin panel, file uploads, and more.
             </p>
           </div>
           <button
-            className="px-5 py-2.5 rounded-lg text-sm font-medium flex-shrink-0"
-            style={{ backgroundColor: "#c8a96e", color: "#0f1117" }}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "10px 20px",
+              backgroundColor: "#c8a96e",
+              color: "#0f1117",
+              borderRadius: "8px",
+              fontSize: "13px",
+              fontWeight: 600,
+              border: "none",
+              cursor: "pointer",
+              flexShrink: 0,
+              fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+            }}
           >
             View Pro →
           </button>

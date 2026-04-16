@@ -7,13 +7,14 @@ import { Toaster } from "sonner";
 const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-dm-sans",
-  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
 });
 
 const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
   variable: "--font-dm-serif",
-  weight: ["400"],
+  weight: "400",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -28,10 +29,29 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${dmSans.variable} ${dmSerif.variable}`}>
-      <body className="font-sans antialiased">
+      <body
+        style={{
+          fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+          backgroundColor: "#f8f7f4",
+          color: "#0f1117",
+          margin: 0,
+          padding: 0,
+          WebkitFontSmoothing: "antialiased",
+          MozOsxFontSmoothing: "grayscale",
+        }}
+      >
         <Providers>
           {children}
-          <Toaster position="top-right" richColors />
+          <Toaster
+            position="top-right"
+            richColors
+            toastOptions={{
+              style: {
+                fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+                fontSize: "14px",
+              },
+            }}
+          />
         </Providers>
       </body>
     </html>

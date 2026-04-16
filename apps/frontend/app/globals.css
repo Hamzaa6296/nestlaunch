@@ -1,42 +1,61 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-@theme {
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: #f8f7f4;
+  --color-foreground: #0f1117;
+  --color-card: #ffffff;
+  --color-card-foreground: #0f1117;
+  --color-primary: #0f1117;
+  --color-primary-foreground: #f8f7f4;
+  --color-secondary: #f1f0ec;
+  --color-secondary-foreground: #0f1117;
+  --color-muted: #e8e7e3;
+  --color-muted-foreground: #6b6b6b;
+  --color-accent: #c8a96e;
+  --color-accent-foreground: #0f1117;
+  --color-border: #e2e1dd;
+  --color-input: #e2e1dd;
+  --color-ring: #0f1117;
+  --color-destructive: #dc2626;
+  --radius: 0.5rem;
   --font-sans: var(--font-dm-sans);
   --font-serif: var(--font-dm-serif);
 }
 
-:root {
-  --background: #f8f7f4;
-  --foreground: #0f1117;
-  --card: #ffffff;
-  --card-foreground: #0f1117;
-  --primary: #0f1117;
-  --primary-foreground: #f8f7f4;
-  --secondary: #f1f0ec;
-  --secondary-foreground: #0f1117;
-  --muted: #e8e7e3;
-  --muted-foreground: #6b6b6b;
-  --accent: #c8a96e;
-  --accent-foreground: #0f1117;
-  --border: #e2e1dd;
-  --input: #e2e1dd;
-  --ring: #0f1117;
-  --radius: 0.5rem;
-  --destructive: #dc2626;
-}
-
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  border-color: var(--color-border);
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-dm-sans), sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
 }
 
-.font-serif {
-  font-family: var(--font-dm-serif), serif;
+input::placeholder {
+  color: #9b9b9b;
+}
+
+input:focus {
+  outline: none;
+  border-color: #0f1117 !important;
+  box-shadow: 0 0 0 3px rgba(15, 17, 23, 0.08);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
 }

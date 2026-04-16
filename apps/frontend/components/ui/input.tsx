@@ -1,20 +1,46 @@
-import * as React from "react"
-import { Input as InputPrimitive } from "@base-ui/react/input"
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-import { cn } from "@/lib/utils"
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
-  return (
-    <InputPrimitive
-      type={type}
-      data-slot="input"
-      className={cn(
-        "h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base transition-colors outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
-        className
-      )}
-      {...props}
-    />
-  )
-}
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, style, ...props }, ref) => {
+    return (
+      <input
+        type={type}
+        className={cn(className)}
+        ref={ref}
+        style={{
+          width: "100%",
+          height: "44px",
+          padding: "0 14px",
+          backgroundColor: "#ffffff",
+          border: "1px solid #e2e1dd",
+          borderRadius: "8px",
+          fontSize: "14px",
+          color: "#0f1117",
+          fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+          outline: "none",
+          transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+          boxSizing: "border-box",
+          ...style,
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.borderColor = "#0f1117";
+          e.currentTarget.style.boxShadow = "0 0 0 3px rgba(15, 17, 23, 0.08)";
+          props.onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.borderColor = "#e2e1dd";
+          e.currentTarget.style.boxShadow = "none";
+          props.onBlur?.(e);
+        }}
+        {...props}
+      />
+    );
+  },
+);
+Input.displayName = "Input";
 
-export { Input }
+export { Input };
