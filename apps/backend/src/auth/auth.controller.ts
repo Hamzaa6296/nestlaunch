@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import {
   Controller,
   Post,
@@ -65,6 +67,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Returns current user data' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   getMe(@Request() req: any) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return this.authService.getMe(req.user._id.toString());
   }
 

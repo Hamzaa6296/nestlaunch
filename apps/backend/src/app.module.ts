@@ -14,6 +14,7 @@ import { MailModule } from './mail/mail.module';
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
+      // eslint-disable-next-line @typescript-eslint/require-await
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGODB_URI'),
       }),

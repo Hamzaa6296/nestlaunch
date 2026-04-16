@@ -15,9 +15,11 @@ import { MailModule } from '../mail/mail.module';
     MailModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
+      // eslint-disable-next-line @typescript-eslint/require-await
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET') ?? 'fallback_secret',
         signOptions: {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           expiresIn: (configService.get<string>('JWT_EXPIRES_IN') ??
             '7d') as any,
         },

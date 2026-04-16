@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class SignupDto {
   @ApiProperty({
-    example: 'Hamza Ahmed',
+    example: 'Ali Hamza',
     description: 'Full name of the user',
   })
   @IsNotEmpty()
