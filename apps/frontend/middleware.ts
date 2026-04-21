@@ -2,29 +2,35 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const protectedRoutes = ["/dashboard"];
-const authRoutes = ["/login", "/signup", "/forgot-password"];
+const guestOnlyRoutes = [
+  "/login",
+  "/signup",
+  "/forgot-password",
+  "/verify-otp",
+];
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
   const { pathname } = request.nextUrl;
 
-  // If trying to access protected route without token
-  if (protectedRoutes.some((route) => pathname.startsWith(route))) {
-    if (!token) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
+  const isProtected = protectedRoutes.some((r) => pathname.startsWith(r));
+  const isGuestOnly = guestOnlyRoutes.some((r) => pathname.startsWith(r));
+
+  if (isProtected && !token) {
+    const url = new URL("/login", request.url);
+    url.searchParams.set("from", pathname);
+    return NextResponse.redirect(url);
   }
 
-  // If already logged in trying to access auth pages
-  if (authRoutes.some((route) => pathname.startsWith(route))) {
-    if (token) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
-    }
+  if (isGuestOnly && token) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|_next/webpack-hmr).*)",
+  ],
 };

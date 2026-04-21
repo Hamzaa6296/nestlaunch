@@ -9,6 +9,9 @@ import { authApi } from "@/lib/auth";
 
 const navItems = [
   {
+    label: "Dashboard",
+    path: "/dashboard",
+    active: true,
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
         <rect
@@ -49,10 +52,11 @@ const navItems = [
         />
       </svg>
     ),
-    label: "Dashboard",
-    active: true,
   },
   {
+    label: "Profile",
+    path: "/dashboard/profile",
+    active: false,
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
         <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8" />
@@ -64,26 +68,24 @@ const navItems = [
         />
       </svg>
     ),
-    label: "Profile",
-    active: false,
   },
   {
+    label: "Settings",
+    path: "/dashboard/settings",
+    active: false,
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
         <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.8" />
         <path
-          d="M12 2v3M12 19v3M2 12h3M19 12h3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"
+          d="M12 2v3M12 19v3M2 12h3M19 12h3"
           stroke="currentColor"
           strokeWidth="1.8"
           strokeLinecap="round"
         />
       </svg>
     ),
-    label: "Settings",
-    active: false,
   },
 ];
-
 export default function DashboardPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -256,6 +258,7 @@ export default function DashboardPage() {
           {navItems.map((item) => (
             <button
               key={item.label}
+              onClick={() => router.push(item.path)}
               style={{
                 display: "flex",
                 alignItems: "center",
