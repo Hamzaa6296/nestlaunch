@@ -20,6 +20,7 @@ async function bootstrap() {
   );
 
   // CORS
+  // setting cors for production
   app.enableCors({
     origin: [
       'https://nestlaunch-frontend-5tox.vercel.app/',
