@@ -64,7 +64,7 @@ export class MailService {
     resetToken: string,
   ) {
     try {
-      const resetUrl = `http://localhost:3000/reset-password?token=${resetToken}`;
+      const resetUrl = `https://nestlaunch-api.onrender.com/reset-password?token=${resetToken}`;
 
       const html = this.compileTemplate('reset-password', {
         name,
