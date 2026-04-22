@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import {
   Controller,
   Post,
@@ -29,16 +28,13 @@ export class AuthController {
 
   @Post('signup')
   @ApiOperation({ summary: 'Register a new user' })
-  @ApiResponse({ status: 201, description: 'User created successfully' })
-  @ApiResponse({ status: 409, description: 'Email already registered' })
+  @ApiResponse({ status: 201, description: 'User created' })
   signup(@Body() dto: SignupDto) {
     return this.authService.signup(dto);
   }
 
   @Post('verify-otp')
   @ApiOperation({ summary: 'Verify email with OTP' })
-  @ApiResponse({ status: 200, description: 'Email verified successfully' })
-  @ApiResponse({ status: 400, description: 'Invalid or expired OTP' })
   @ApiBody({
     schema: {
       type: 'object',
@@ -54,8 +50,6 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Login and get JWT token' })
-  @ApiResponse({ status: 200, description: 'Login successful, returns JWT' })
-  @ApiResponse({ status: 401, description: 'Invalid credentials' })
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }
@@ -64,24 +58,34 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Get current logged in user' })
-  @ApiResponse({ status: 200, description: 'Returns current user data' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
   getMe(@Request() req: any) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     return this.authService.getMe(req.user._id.toString());
   }
 
   @Post('forgot-password')
-  @ApiOperation({ summary: 'Send password reset email' })
-  @ApiResponse({ status: 200, description: 'Reset email sent if exists' })
+  @ApiOperation({ summary: 'Send password reset OTP to email' })
   forgotPassword(@Body() dto: ForgotPasswordDto) {
     return this.authService.forgotPassword(dto);
   }
 
+  @Post('verify-reset-otp')
+  @ApiOperation({ summary: 'Verify password reset OTP' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', example: 'hamza@example.com' },
+        otp: { type: 'string', example: '847291' },
+      },
+    },
+  })
+  verifyResetOtp(@Body() body: { email: string; otp: string }) {
+    return this.authService.verifyResetOtp(body.email, body.otp);
+  }
+
   @Post('reset-password')
-  @ApiOperation({ summary: 'Reset password using token from email' })
-  @ApiResponse({ status: 200, description: 'Password reset successfully' })
-  @ApiResponse({ status: 400, description: 'Invalid or expired token' })
+  @ApiOperation({ summary: 'Reset password using OTP' })
   resetPassword(@Body() dto: ResetPasswordDto) {
     return this.authService.resetPassword(dto);
   }

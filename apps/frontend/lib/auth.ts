@@ -1,47 +1,36 @@
 import api from "./axios";
 
-export interface SignupData {
-  name: string;
-  email: string;
-  password: string;
-}
-
-export interface LoginData {
-  email: string;
-  password: string;
-}
-
 export const authApi = {
-  signup: async (data: SignupData) => {
-    const response = await api.post("/auth/signup", data);
-    return response.data;
+  signup: async (data: { name: string; email: string; password: string }) => {
+    const r = await api.post("/auth/signup", data);
+    return r.data;
   },
-
   verifyOtp: async (email: string, otp: string) => {
-    const response = await api.post("/auth/verify-otp", { email, otp });
-    return response.data;
+    const r = await api.post("/auth/verify-otp", { email, otp });
+    return r.data;
   },
-
-  login: async (data: LoginData) => {
-    const response = await api.post("/auth/login", data);
-    return response.data;
+  login: async (data: { email: string; password: string }) => {
+    const r = await api.post("/auth/login", data);
+    return r.data;
   },
-
   getMe: async () => {
-    const response = await api.get("/auth/me");
-    return response.data;
+    const r = await api.get("/auth/me");
+    return r.data;
   },
-
   forgotPassword: async (email: string) => {
-    const response = await api.post("/auth/forgot-password", { email });
-    return response.data;
+    const r = await api.post("/auth/forgot-password", { email });
+    return r.data;
   },
-
-  resetPassword: async (token: string, newPassword: string) => {
-    const response = await api.post("/auth/reset-password", {
-      token,
+  verifyResetOtp: async (email: string, otp: string) => {
+    const r = await api.post("/auth/verify-reset-otp", { email, otp });
+    return r.data;
+  },
+  resetPassword: async (email: string, otp: string, newPassword: string) => {
+    const r = await api.post("/auth/reset-password", {
+      email,
+      otp,
       newPassword,
     });
-    return response.data;
+    return r.data;
   },
 };

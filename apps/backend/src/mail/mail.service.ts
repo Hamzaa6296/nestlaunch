@@ -85,4 +85,24 @@ export class MailService {
       throw error;
     }
   }
+
+  async sendPasswordResetOtp(email: string, name: string, otp: string) {
+    try {
+      const html = this.compileTemplate('reset-otp', {
+        name,
+        otp,
+        expiryMinutes: 10,
+      });
+      await this.transporter.sendMail({
+        from: this.configService.get<string>('MAIL_FROM'),
+        to: email,
+        subject: 'Password Reset OTP — NestLaunch',
+        html,
+      });
+      this.logger.log(`Password reset OTP sent to ${email}`);
+    } catch (error) {
+      this.logger.error(`Failed to send reset OTP to ${email}`, error);
+      throw error;
+    }
+  }
 }

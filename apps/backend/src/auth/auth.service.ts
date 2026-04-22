@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Injectable,
   ConflictException,
@@ -12,7 +13,6 @@ import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
-import * as crypto from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -122,48 +122,60 @@ export class AuthService {
   }
 
   // ─── Forgot Password ──────────────────────────────────
+  // ─── Forgot Password (sends OTP) ─────────────────────
   async forgotPassword(dto: ForgotPasswordDto) {
     const user = await this.usersService.findByEmail(dto.email);
 
     // Always return same message for security
-    // Don't reveal if email exists or not
     if (!user) {
-      return {
-        message: 'If that email exists, a reset link has been sent.',
-      };
+      return { message: 'If that email exists, a reset OTP has been sent.' };
     }
 
-    // Generate reset token
-    const resetToken = crypto.randomBytes(32).toString('hex');
-    const resetPasswordExpiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+    // Generate 6 digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
+    // Save OTP to resetPasswordToken field
     await this.usersService.updateById(user._id.toString(), {
-      resetPasswordToken: resetToken,
-      resetPasswordExpiry,
+      resetPasswordToken: otp,
+      resetPasswordExpiry: otpExpiry,
     });
 
-    // Send reset email
-    await this.mailService.sendPasswordResetEmail(
-      user.email,
-      user.name,
-      resetToken,
-    );
+    // Send OTP email
+    await this.mailService.sendPasswordResetOtp(user.email, user.name, otp);
 
     return {
-      message: 'If that email exists, a reset link has been sent.',
+      message: 'If that email exists, a reset OTP has been sent.',
     };
   }
 
-  // ─── Reset Password ───────────────────────────────────
-  async resetPassword(dto: ResetPasswordDto) {
-    const user = await this.usersService.findByResetToken(dto.token);
+  // ─── Verify Reset OTP ─────────────────────────────────
+  async verifyResetOtp(email: string, otp: string) {
+    const user = await this.usersService.findByEmail(email);
+    if (!user) throw new BadRequestException('User not found');
 
-    if (!user) {
-      throw new BadRequestException('Invalid or expired reset token');
+    if (user.resetPasswordToken !== otp) {
+      throw new BadRequestException('Invalid OTP');
     }
 
     if (user.resetPasswordExpiry && user.resetPasswordExpiry < new Date()) {
-      throw new BadRequestException('Reset token has expired');
+      throw new BadRequestException('OTP has expired');
+    }
+
+    return { message: 'OTP verified successfully', email };
+  }
+
+  // ─── Reset Password With OTP ──────────────────────────
+  async resetPassword(dto: ResetPasswordDto) {
+    const user = await this.usersService.findByEmail(dto.email);
+    if (!user) throw new BadRequestException('User not found');
+
+    if (user.resetPasswordToken !== dto.otp) {
+      throw new BadRequestException('Invalid OTP');
+    }
+
+    if (user.resetPasswordExpiry && user.resetPasswordExpiry < new Date()) {
+      throw new BadRequestException('OTP has expired');
     }
 
     const hashedPassword = await bcrypt.hash(dto.newPassword, 12);
