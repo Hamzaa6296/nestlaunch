@@ -1,44 +1,35 @@
 "use client";
 
+import { Suspense } from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { AuthLayout } from "@/components/auth-layout";
 import { FormInput } from "@/components/form-input";
-import { Button } from "@/components/ui/button";
 import { authApi } from "@/lib/auth";
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || "";
   const [isLoading, setIsLoading] = useState(false);
-  const [form, setForm] = useState({ password: "", confirmPassword: "" });
-  const [errors, setErrors] = useState({ password: "", confirmPassword: "" });
+  const [form, setForm] = useState({ password: "", confirm: "" });
+  const [errors, setErrors] = useState({ password: "", confirm: "" });
 
   const validate = () => {
-    const newErrors = { password: "", confirmPassword: "" };
-    let isValid = true;
-
-    if (!form.password) {
-      newErrors.password = "Password is required";
-      isValid = false;
-    } else if (form.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-      isValid = false;
+    const e = { password: "", confirm: "" };
+    let ok = true;
+    if (!form.password || form.password.length < 6) {
+      e.password = "Minimum 6 characters";
+      ok = false;
     }
-
-    if (!form.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password";
-      isValid = false;
-    } else if (form.password !== form.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
-      isValid = false;
+    if (form.password !== form.confirm) {
+      e.confirm = "Passwords do not match";
+      ok = false;
     }
-
-    setErrors(newErrors);
-    return isValid;
+    setErrors(e);
+    return ok;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,15 +39,14 @@ export default function ResetPasswordPage() {
       toast.error("Invalid reset link");
       return;
     }
-
     setIsLoading(true);
     try {
       await authApi.resetPassword(token, form.password);
       toast.success("Password reset successfully!");
       router.push("/login");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Reset failed");
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Reset failed");
     } finally {
       setIsLoading(false);
     }
@@ -66,15 +56,22 @@ export default function ResetPasswordPage() {
     return (
       <AuthLayout
         title="Invalid link"
-        subtitle="This password reset link is invalid or has expired"
+        subtitle="This reset link is invalid or has expired"
       >
         <Link
           href="/forgot-password"
-          className="flex items-center justify-center w-full h-11 text-sm font-medium rounded-lg"
           style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+            height: "46px",
             backgroundColor: "#0f1117",
             color: "#f8f7f4",
-            borderRadius: "8px",
+            textDecoration: "none",
+            borderRadius: "9px",
+            fontSize: "14px",
+            fontWeight: 600,
           }}
         >
           Request New Link
@@ -85,7 +82,10 @@ export default function ResetPasswordPage() {
 
   return (
     <AuthLayout title="Reset password" subtitle="Enter your new password below">
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+      >
         <FormInput
           id="password"
           label="New Password"
@@ -97,34 +97,69 @@ export default function ResetPasswordPage() {
           disabled={isLoading}
           autoComplete="new-password"
         />
-
         <FormInput
-          id="confirmPassword"
+          id="confirm"
           label="Confirm Password"
           type="password"
-          placeholder="Repeat your new password"
-          value={form.confirmPassword}
-          onChange={(e) =>
-            setForm({ ...form, confirmPassword: e.target.value })
-          }
-          error={errors.confirmPassword}
+          placeholder="Repeat your password"
+          value={form.confirm}
+          onChange={(e) => setForm({ ...form, confirm: e.target.value })}
+          error={errors.confirm}
           disabled={isLoading}
           autoComplete="new-password"
         />
-
-        <Button
+        <button
           type="submit"
           disabled={isLoading}
-          className="w-full h-11 text-sm font-medium"
           style={{
+            width: "100%",
+            height: "46px",
             backgroundColor: "#0f1117",
             color: "#f8f7f4",
-            borderRadius: "8px",
+            border: "none",
+            borderRadius: "9px",
+            fontSize: "14px",
+            fontWeight: 600,
+            cursor: isLoading ? "not-allowed" : "pointer",
+            opacity: isLoading ? 0.7 : 1,
+            fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+            transition: "opacity 0.15s",
           }}
         >
           {isLoading ? "Resetting..." : "Reset Password"}
-        </Button>
+        </button>
       </form>
     </AuthLayout>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense
+      fallback={
+        <div
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#f8f7f4",
+          }}
+        >
+          <div
+            style={{
+              width: "32px",
+              height: "32px",
+              border: "3px solid #e2e1dd",
+              borderTopColor: "#0f1117",
+              borderRadius: "50%",
+              animation: "spin 0.8s linear infinite",
+            }}
+          />
+        </div>
+      }
+    >
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
