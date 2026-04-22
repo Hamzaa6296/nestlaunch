@@ -200,7 +200,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
                   margin: 0,
                 }}
               >
-                Hamza Ahmed
+                Ali Hamza
               </p>
               <p
                 style={{

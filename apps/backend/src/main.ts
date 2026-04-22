@@ -22,7 +22,7 @@ async function bootstrap() {
   // CORS
   app.enableCors({
     origin: [
-      'http://localhost:3000',
+      'https://nestlaunch-frontend-5tox.vercel.app/',
       configService.get<string>('FRONTEND_URL') || '',
     ],
     credentials: true,
