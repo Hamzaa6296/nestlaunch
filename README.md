@@ -1,188 +1,192 @@
-<div align="center">
+<h1 align="center">🚀 NestLaunch</h1>
 
-<img src="https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white" />
-<img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
-<img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" />
-<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
-<img src="https://img.shields.io/badge/Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white" />
+<p align="center">
+  <b>An open-source SaaS starter with a real NestJS backend and a Next.js frontend.</b><br/>
+  Auth, validation, API docs, and a clean monorepo, ready on day one.
+</p>
 
-# 🚀 NestLaunch
+<p align="center">
+  <a href="https://nestlaunch-frontend-5tox.vercel.app"><b>Live demo</b></a> ·
+  <a href="#-quick-start">Quick start</a> ·
+  <a href="https://github.com/Hamzaa6296/nestlaunch/issues">Report a bug</a> ·
+  <a href="https://github.com/Hamzaa6296/nestlaunch/issues">Request a feature</a>
+</p>
 
-### Production-ready SaaS boilerplate built with NestJS + Next.js + MongoDB + Stripe
+<p align="center">
+  <img src="https://img.shields.io/github/stars/Hamzaa6296/nestlaunch?style=flat-square" alt="Stars"/>
+  <img src="https://img.shields.io/github/license/Hamzaa6296/nestlaunch?style=flat-square" alt="License"/>
+  <img src="https://img.shields.io/github/last-commit/Hamzaa6296/nestlaunch?style=flat-square" alt="Last commit"/>
+  <img src="https://img.shields.io/badge/NestJS-E0234E?style=flat-square&logo=nestjs&logoColor=white" alt="NestJS"/>
+  <img src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js"/>
+  <img src="https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white" alt="MongoDB"/>
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript"/>
+</p>
 
-[Report Bug](https://github.com/Hamzaa6296/nestlaunch/issues) · 
-[Request Feature](https://github.com/Hamzaa6296/nestlaunch/issues) · 
-[Pro Version](#-pro-version)
+<!--
+  ADD BEFORE PUBLISHING:
+  1. A 10-second demo GIF or screenshot of signup → OTP verify → dashboard.
+     Save it to docs/demo.gif and uncomment the line below.
+  2. A CI status badge once GitHub Actions is set up.
 
-</div>
+  <p align="center"><img src="docs/demo.gif" alt="NestLaunch demo" width="800"/></p>
+-->
 
 ---
 
-## 📌 What is NestLaunch?
+## 📌 Why NestLaunch?
 
-NestLaunch is a full-stack SaaS boilerplate that gives you a 
-production-ready foundation so you can skip the boring setup 
-and focus on building your actual product.
+Most SaaS starters are built around Next.js API routes or serverless functions. That's fine for small apps, but many teams want a **dedicated backend** with real structure: modules, dependency injection, validation, and generated API docs.
 
-Most boilerplates use Express or serverless functions as backend.
-**NestLaunch is different** — it uses a proper, dedicated 
-**NestJS backend** paired with **Next.js frontend** in a clean 
-Turborepo monorepo.
+NestLaunch gives you that from the start.
+
+| | Typical Next.js-only starter | **NestLaunch** |
+| --- | --- | --- |
+| Backend | API routes / serverless | **Dedicated NestJS API** |
+| API docs | Usually manual | **Auto-generated Swagger** |
+| Structure | One app | **Turborepo monorepo (API + web)** |
+| Validation | Ad hoc | **class-validator on every input** |
+| Scaling the backend | Tied to the frontend | **Deploy and scale independently** |
+
+**It's a good fit if** you know (or want to use) NestJS, you're building a SaaS or API-heavy product, and you'd rather start from a clean foundation than wire up auth for the hundredth time.
 
 ---
 
-## ✨ Free Version Features
+## ✨ What's included
 
 ### Backend (NestJS)
-- ✅ NestJS + MongoDB + Mongoose setup
-- ✅ JWT Authentication (signup, login)
-- ✅ Email OTP Verification
-- ✅ Forgot Password / Reset Password
-- ✅ Input validation with class-validator
-- ✅ Swagger API documentation (auto-generated)
-- ✅ Environment config with @nestjs/config
-- ✅ Global error handling & logging
-- ✅ Docker + docker-compose setup
+- ✅ NestJS + MongoDB + Mongoose
+- ✅ JWT authentication (signup, login)
+- ✅ Email OTP verification
+- ✅ Forgot password / reset password
+- ✅ Input validation with `class-validator`
+- ✅ Auto-generated Swagger API docs
+- ✅ Environment config with `@nestjs/config`
+- ✅ Global error handling and logging
 
 ### Frontend (Next.js)
-- ✅ Next.js 14 App Router
-- ✅ TypeScript configured
+- ✅ Next.js App Router + TypeScript
 - ✅ Tailwind CSS + shadcn/ui
-- ✅ Redux Toolkit setup
-- ✅ Auth pages (signup, login, OTP verify, forgot password)
-- ✅ Protected routes middleware
+- ✅ Redux Toolkit
+- ✅ Auth pages: signup, login, OTP verify, forgot password
+- ✅ Protected routes via middleware
 - ✅ Basic user dashboard
 
-### DevOps
-- ✅ Turborepo monorepo structure
-- ✅ Docker + docker-compose
-- ✅ ESLint + Prettier configured
-- ✅ .env.example files
+### Tooling
+- ✅ Turborepo monorepo
+- ✅ ESLint + Prettier
+- ✅ `.env.example` files for both apps
+- ✅ Docker + docker-compose <!-- VERIFY docker-compose.yml EXISTS IN THE REPO BEFORE KEEPING THIS LINE -->
 
 ---
 
-## 💎 Pro Version
+## 🗺 Roadmap
 
-The Pro version includes everything above **PLUS:**
+I'm building this in public. Here's what's planned, roughly in order:
 
-### Backend extras
-- 💎 Stripe subscription payments (monthly/yearly)
-- 💎 Stripe webhook handler
-- 💎 Role-based access control (admin/user)
-- 💎 File upload (local + AWS S3)
-- 💎 Email notifications (welcome, invoice, alerts)
-- 💎 Rate limiting + security headers
-- 💎 Unit tests setup (Jest)
+- [ ] Stripe subscriptions (monthly / yearly) and webhook handling
+- [ ] Role-based access control (admin / user)
+- [ ] Rate limiting and security headers
+- [ ] Unit and e2e test setup (Jest)
+- [ ] GitHub Actions CI
+- [ ] File uploads (local + S3)
+- [ ] Admin dashboard
+- [ ] Upgrade to the latest Next.js
 
-### Frontend extras
-- 💎 Full admin dashboard
-- 💎 User management panel
-- 💎 Stripe pricing page + checkout flow
-- 💎 Subscription management page
-- 💎 Dark mode support
-- 💎 Landing page template
-
-### DevOps extras
-- 💎 Production Docker setup
-- 💎 GitHub Actions CI/CD
-- 💎 Vercel + Railway deployment guide
-
-### 👉 [Get Pro Version - $79](https://gumroad.com) ← (link coming soon)
+Want something bumped up the list? [Open an issue](https://github.com/Hamzaa6296/nestlaunch/issues) or react to an existing one with 👍.
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠 Tech stack
 
 | Layer | Technology |
-|-------|-----------|
+| --- | --- |
 | Backend | NestJS, Node.js, TypeScript |
-| Frontend | Next.js 14, React, TypeScript |
+| Frontend | Next.js (App Router), React, TypeScript |
 | Database | MongoDB, Mongoose |
-| Auth | JWT, Passport.js, Nodemailer |
-| Payments | Stripe (Pro) |
+| Auth | JWT, Passport.js, Nodemailer (OTP emails) |
 | State | Redux Toolkit |
 | UI | Tailwind CSS, shadcn/ui |
 | Monorepo | Turborepo |
-| DevOps | Docker, GitHub Actions |
 
 ---
 
-## 📁 Project Structure
+## 📁 Project structure
 
 ```
 nestlaunch/
 ├── apps/
-│   ├── backend/          ← NestJS API
-│   └── frontend/         ← Next.js App
+│   ├── backend/      ← NestJS API
+│   └── frontend/     ← Next.js app
 ├── packages/
-│   ├── types/            ← Shared TypeScript types
-│   └── config/           ← Shared ESLint/TS configs
-├── docker-compose.yml
+│   └── config/       ← Shared ESLint / TS configs
 ├── turbo.json
 ├── package.json
 └── README.md
 ```
 
-## 🚀 Quick Start
+---
+
+## 🚀 Quick start
 
 ### Prerequisites
 - Node.js 18+
 - MongoDB (local or Atlas)
-- npm or yarn
+- npm
 
-### Installation
+### Install and run
 
 ```bash
-# Clone the repo
+# 1. Clone the repo
 git clone https://github.com/Hamzaa6296/nestlaunch.git
-
-# Navigate to project
 cd nestlaunch
 
-# Install dependencies
+# 2. Install dependencies
 npm install
 
-# Copy environment files
+# 3. Set up environment files
 cp apps/backend/.env.example apps/backend/.env
 cp apps/frontend/.env.example apps/frontend/.env
 
-# Start development servers
+# 4. Start both apps
 npm run dev
 ```
 
-Backend runs on → http://localhost:3001
-Frontend runs on → http://localhost:3000
-Swagger docs → http://localhost:3001/api
+| Service | URL |
+| --- | --- |
+| Frontend | http://localhost:3000 |
+| Backend API | http://localhost:3001 |
+| Swagger docs | http://localhost:3001/api |
+
+> **Note:** Fill in your MongoDB connection string and SMTP settings in `apps/backend/.env` before starting. OTP emails need a working SMTP provider.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read 
-[CONTRIBUTING.md](CONTRIBUTING.md) first.
+Contributions are welcome, from typo fixes to new features.
 
-1. Fork the repository
-2. Create your branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Read [CONTRIBUTING.md](CONTRIBUTING.md)
+2. Pick an issue, ideally one labeled [`good first issue`](https://github.com/Hamzaa6296/nestlaunch/issues?q=label%3A%22good+first+issue%22)
+3. Fork, branch, commit, and open a pull request
 
-Check issues labeled 
-[good first issue](https://github.com/Hamzaa6296/nestlaunch/issues?q=label%3A%22good+first+issue%22) 
-to get started.
+I review issues and PRs quickly, usually within a day.
+
+---
+
+## 💼 Need this customized?
+
+I'm [Ali Hamza](https://github.com/Hamzaa6296), the author of NestLaunch. If you want a SaaS product, API, or dashboard built on this stack, or need help adapting NestLaunch to your idea, get in touch:
+
+📧 **ali.hamzaaa6296@gmail.com** 
 
 ---
 
 ## 📄 License
 
-MIT License — see [LICENSE](LICENSE) for details.
+MIT. See [LICENSE](LICENSE) for details.
 
 ---
 
-<div align="center">
-
-If this project helps you, please give it a ⭐ — it means a lot!
-
-Made with ❤️ by [Hamza](https://github.com/Hamzaa6296)
-
-</div>
+<p align="center">
+  If NestLaunch saves you time, a ⭐ helps other developers find it.
+</p>
